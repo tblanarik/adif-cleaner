@@ -12,7 +12,10 @@ def filter_adi_data(data, start_datetime):
         if '<CALL:' in line:
             qso_date = line.split('<QSO_DATE:')[1].split('>')[1].strip()
             time_on = line.split('<TIME_ON:')[1].split('>')[1].strip()
-            qso_datetime = datetime.strptime(qso_date + time_on, '%Y%m%d%H%M%S')
+            try:
+                qso_datetime = datetime.strptime(qso_date + time_on, '%Y%m%d%H%M%S')
+            except ValueError:
+                continue
             if qso_datetime >= start_datetime:
                 filtered_data.append(line)
         else:
